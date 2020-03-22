@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>New Repository</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <form>
+      Path <button id="selectBtn">Path</button> Name
+      <input type="text" id="reponame" name="reponame" />
+      <!-- Remote
+        Description
+        gitignore
+        readme -->
+      <input type="submit" />
+    </form>
+
+    <h1>💖 Hello World!</h1>
+    <p>Welcome to your Electron application.</p>
+    <script>
+      const { dialog } = require('electron').remote;
+
+      document
+        .querySelector('#selectBtn')
+        .addEventListener('click', function(event) {
+          let path = dialog.showOpenDialogSync(
+            {
+              defaultPath: require('os').homedir(), //Default location for new repositories
+              properties: ['openDirectory', 'createDirectory']
+            },
+            function(directory) {
+              if (directory !== undefined) {
+                // handle files
+              }
+              return directory;
+            }
+          );
+          const { exec } = require('child_process');
+          const init = exec(
+            'git init ' + 'test',
+            { cwd: path[0] },
+            (error, stdout, stderr) => {
+              if (error) {
+                console.log(`error: ${error.message}`);
+                return;
+              }
+              if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                return;
+              }
+              console.log(`stdout: ${stdout}`);
+            }
+          );
+          init;
+        });
+    </script>
+  </body>
+</html>
